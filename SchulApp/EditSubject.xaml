@@ -1,0 +1,37 @@
+﻿<Page
+    x:Class="SchulApp.EditSubject"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SchulApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data="using:SchulApp.Models">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton Name="btn_Done_EditSubject" Icon="Accept" Label="Fertig" Click="btn_Done_EditSubject_Click"/>
+            <AppBarButton Name="btn_Cancel_EditSubject" Icon="Cancel" Label="Abbrechen" Click="btn_Cancel_EditSubject_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Orientation="Vertical" Margin="10,10,10,10">
+            <TextBlock Text="Fach hinzufügen" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <TextBlock Text="Name" Style="{StaticResource SubheaderTextBlockStyle}" />
+            <TextBox Name="tbx_Name_EditSubject" Margin="0,0,0,10" />
+            <TextBlock Text="Lehrer" Style="{StaticResource SubheaderTextBlockStyle}" />
+            <TextBox Name="tbx_Teacher_EditSubject" Margin="0,0,0,10"/>
+            <TextBlock Text="Farbe" Style="{StaticResource SubheaderTextBlockStyle}"/>
+            <GridView Name="gvw_ColorPicker_EditSubject" ItemsSource="{x:Bind list_of_colors}">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="data:SubjectColor">
+                        <Rectangle Fill="{x:Bind brush}" Height="100" Width="100"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="SchulApp.Subjects"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SchulApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:SchulApp.Models"
+    mc:Ignorable="d">
+
+    <Page.BottomAppBar>
+        <CommandBar Name="cmb_Subjects" Background="{ThemeResource AppBarBackground}">
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton Name="btn_SubjectDetail" Label="Information" Icon="Accept" Visibility="Collapsed"/>
+            <AppBarButton Name="btn_AddSubject" Icon="Add" Label="Fach hinzufügen" Click="btn_AddSubject_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
+        <ListView 
+            Name="lvw_Subjects"
+            ItemsSource="{x:Bind subjects_list}"
+            IsItemClickEnabled="True"
+            SelectionChanged="lvw_Subjects_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:Subject">
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Grid.Column="0" Fill="{x:Bind color.brush}" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Foreground="White" Text="{x:Bind first_letter}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="ExtraLight" FontSize="30"/>
+                        <StackPanel Orientation="Vertical" Grid.Column="1">
+                            <TextBlock Text="{x:Bind subject_name}" FontSize="30%"/>
+                            <TextBlock Text="{x:Bind teacher}" Foreground="DarkGray" FontSize="20%"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

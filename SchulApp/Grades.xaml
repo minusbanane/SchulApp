@@ -1,0 +1,91 @@
+﻿<Page
+    x:Class="SchulApp.Grades"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SchulApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:SchulApp.Models"
+    mc:Ignorable="d"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton Name="btn_AddGrade_Grades" Icon="Add" Label="Note hinzufügen" Click="btn_AddGrade_Grades_Click"/>
+            <AppBarButton Name="btn_Delete_Grades" Icon="Delete" Label="Note(n) löschen" Click="btn_Delete_Grades_Click" Visibility="Collapsed" />
+            <AppBarButton Name="btn_SelectionList_Grades" Icon="List" Label="Mehrere Auswählen" Click="btn_SelectionList_Grades_Click" />
+            <AppBarButton Name="btn_CloseMultipleSelection_Grades" Icon="Clear" Label="Auswahl beenden" Click="btn_CloseMultipleSelection_Grades_Click" Visibility="Collapsed"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Page.Resources>
+        <DataTemplate x:Key="dtm_GradeList_Grades" x:DataType="data:Grade"> 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{x:Bind grade}" FontSize="45" Grid.Column="0"/>
+                    <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <TextBlock Text="{x:Bind type.readable_typename}"  Foreground="DarkGray" FontSize="15"/>
+                        <TextBlock Text="{x:Bind subject.subject_name}" Foreground="DarkGray" FontSize="15"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button Content="Mehr Infos" Style="{StaticResource TextBlockButtonStyle}" Click="btn_MoreInfos_Click" Grid.Row="1"></Button>
+                    <StackPanel Visibility="Collapsed" Grid.Row="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE163;" VerticalAlignment="Center" Margin="0,0,5,0" />
+                            <TextBlock Text="{x:Bind readable_date}" Foreground="DarkGray" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="dtm_GradeDetail_Grades" x:DataType="data:Grade" >
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{x:Bind grade}" />
+                <TextBlock Text="{x:Bind subject.subject_name}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Orientation="Vertical">
+            <!--<ListView 
+                Name="lvw_Grades" 
+                ItemsSource="{x:Bind grades}" 
+                SelectionMode="Multiple"
+                SelectionChanged="lvw_Grades_SelectionChanged" 
+                ItemClick="lvw_Grades_ItemClick"
+                Visibility="Visible"
+            >
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Grade">
+                        <controls:Expander Header="{StaticResource dtm_GradeList_Grades}" IsExpanded="False" >
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{x:Bind grade}" />
+                                <TextBlock Text="{x:Bind subject.subject_name}" />
+                            </StackPanel>
+                        </controls:Expander>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+            <ListView Name="lvw_Grades" ItemsSource="{x:Bind grades}" SelectionMode="None" ItemTemplate="{StaticResource dtm_GradeList_Grades}" SelectionChanged="lvw_Grades_SelectionChanged" ItemClick="lvw_Grades_ItemClick" IsItemClickEnabled="True"></ListView>
+            <TextBlock Name="tbk_Hinweis" Text="Tippe auf eine Note, um weitere Details anzuzeigen!" HorizontalAlignment="Center" TextWrapping="Wrap" Foreground="Gray" Margin="15,10,15,0" TextAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Page>

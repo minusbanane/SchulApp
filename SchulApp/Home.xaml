@@ -1,0 +1,36 @@
+﻿<Page
+    x:Class="SchulApp.Home"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SchulApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
+        <ListView x:Name="lvw_Average_Home" SelectionMode="None" >
+            <controls:RadialGauge x:Name="rdg_Average_Home"
+                                      MaxWidth="250"
+                                      Height="Auto"
+                                  IsInteractive="False"
+                                  Maximum="6.00"
+                                  MinAngle="-80"
+                                  MaxAngle="80"
+                                  Minimum="1.00"
+                                  TrailBrush="#FF00A2FF"
+                                  Unit="Gesamtdurchschnitt"
+                                  TickSpacing="1"
+                                  TickBrush="Transparent"
+                                  NeedleBrush="Transparent"
+                                  NeedleWidth="0"
+                                  NeedleLength="0"
+                                  TickWidth="0"
+                                  Value="{x:Bind rdg_average_value}"
+                                  StepSize="4"/>
+            <controls:HeaderedTextBlock x:Name="htb_BestSubject_Home"
+                                        Header="Bestes Fach"
+                                        Text="-"/>
+        </ListView>
+    </Grid>
+</Page>

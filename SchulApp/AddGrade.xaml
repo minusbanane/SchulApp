@@ -1,0 +1,61 @@
+﻿<Page
+    x:Class="SchulApp.AddGrade"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SchulApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:SchulApp.Models"
+    mc:Ignorable="d">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton Icon="Accept" Name="btn_Done_AddGrade" Label="Fertig" Click="btn_Done_AddGrade_Click"/>
+            <AppBarButton Icon="Cancel" Name="btn_Cancel_AddGrade" Label="Abbrechen" Click="btn_Cancel_AddGrade_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <StackPanel Orientation="Vertical" Margin="10,10,10,10">
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Fach" FontSize="30" />
+                    <ComboBox Name="cmb_Subject_AddGrade" PlaceholderText="Fach auswählen...">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="data:Subject">
+                                <TextBlock Text="{x:Bind subject_name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Note" FontSize="30" />
+                    <StackPanel Orientation="Vertical">
+                        <RadioButton Content="1" Tag="1" Checked="rdb_Grade_AddGrade_Checked" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        <RadioButton Content="2" Tag="2" Checked="rdb_Grade_AddGrade_Checked" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        <RadioButton Content="3" Tag="3" Checked="rdb_Grade_AddGrade_Checked" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        <RadioButton Content="4" Tag="4" Checked="rdb_Grade_AddGrade_Checked" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        <RadioButton Content="5" Tag="5" Checked="rdb_Grade_AddGrade_Checked" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        <RadioButton Content="6" Tag="6" Checked="rdb_Grade_AddGrade_Checked" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Name="scp_GradeType_AddGrade" Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Typ" FontSize="30%" />
+                    <ComboBox Name="cmb_GradeType_AddGrade">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="data:GradeType">
+                                <TextBlock Text="{x:Bind readable_typename}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Name="scp_Date_AddGrade" Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Datum" FontSize="30%" />
+                    <DatePicker Name="dtp_Date_AddGrade" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,57 @@
+﻿<Page
+    x:Class="SchulApp.LessonTimes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SchulApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data="using:SchulApp.Models">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton Name="btn_AddLesson_LessonTimes" Icon="Add" Click="btn_AddLesson_LessonTimes_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
+                <StackPanel Name="stp_Timetable_Settings">
+                    <TextBlock Text="Stundenplan" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <TextBlock Text="Zeiten" Style="{StaticResource SubheaderTextBlockStyle}" />
+                    <ListView ItemsSource="{x:Bind lessontimes_list}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:LessonTime">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                        <TextBlock FontSize="45" Text="{x:Bind lesson_number}" />
+                                        <TextBlock FontSize="45" Text="."/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Orientation="Vertical">
+                                        <TextBlock Text="{x:Bind readable_type}" FontSize="15" Foreground="DarkGray"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Bind readable_start_time}" Foreground="DarkGray"/>
+                                            <TextBlock Text=" Uhr - "  Foreground="DarkGray"/>
+                                            <TextBlock Text="{x:Bind readable_end_time}" Foreground="DarkGray"/>
+                                            <TextBlock Text=" Uhr (" Foreground="DarkGray" />
+                                            <TextBlock Text="{x:Bind readable_total_time}" Foreground="DarkGray"/>
+                                            <TextBlock Text=")" Foreground="DarkGray"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>
