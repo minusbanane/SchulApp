@@ -17,13 +17,6 @@
         <RelativePanel Name="rlp_Header_MainPage" Grid.Row="0" Background="{ThemeResource AppBarBackground}">
             <Button Name="btn_Hamburger_MainPage" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Background="Transparent" Padding="10,10,10,10" Click="btn_Hamburger_MainPage_Click" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" Width="48" Height="48"/>
             <TextBlock Name="tbk_Header_MainPage" Text="Home" RelativePanel.RightOf="btn_Hamburger_MainPage" Padding="10,10,10,10" FontSize="24" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-            <CommandBar Name="cdb_Top_MainPage" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
-                <CommandBar.Content>
-                    <Grid/>
-                </CommandBar.Content>
-                <AppBarButton Name="btn_Save_MainPage" Icon="Save" Click="btn_Save_MainPage_Click" Label="Speichern" />
-            </CommandBar>
-            <ProgressRing Name="pgr_MainPage" RelativePanel.LeftOf="cdb_Top_MainPage" RelativePanel.AlignVerticalCenterWithPanel="True"/>
         </RelativePanel>
 
         <SplitView Name="spv_SplitView_MainPage"

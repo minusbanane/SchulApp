@@ -18,7 +18,7 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ListView 
             Name="lvw_Subjects"
             ItemsSource="{x:Bind subjects_list}"
@@ -33,7 +33,7 @@
                         </Grid.ColumnDefinitions>
                         <Ellipse Grid.Column="0" Fill="{x:Bind color.brush}" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="0" Foreground="White" Text="{x:Bind first_letter}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="ExtraLight" FontSize="30"/>
-                        <StackPanel Orientation="Vertical" Grid.Column="1">
+                        <StackPanel Orientation="Vertical" Grid.Column="1"  Margin="10,0,0,0">
                             <TextBlock Text="{x:Bind subject_name}" FontSize="30%"/>
                             <TextBlock Text="{x:Bind teacher}" Foreground="DarkGray" FontSize="20%"/>
                         </StackPanel>

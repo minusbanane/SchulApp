@@ -25,6 +25,8 @@ namespace SchulApp
     {
         public List<GradeType> gradetypes;
         public int grade = 0;
+        private bool edit = false;
+        private int edit_id;
 
         public AddGrade()
         {
@@ -44,15 +46,43 @@ namespace SchulApp
             cmb_GradeType_AddGrade.SelectedItem = gradetypes[0];
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if(e.Parameter != null)
+            {
+                edit_id = (int)e.Parameter;
+                Grade edit_grade = GradeManager.GetGrade(edit_id);
+                cmb_Subject_AddGrade.SelectedItem = edit_grade.subject;
+                foreach(RadioButton rb in rdbs_Grade.Children)
+                {
+                    if(rb.Tag.ToString() == edit_grade.grade.ToString())
+                    {
+                        rb.IsChecked = true;
+                    }
+                }
+                cmb_GradeType_AddGrade.SelectedIndex = edit_grade.type.typeid;
+                dtp_Date_AddGrade.Date = edit_grade.date;
+
+                edit = true;
+            } else
+            {
+                edit = false;
+            }
+        }
+
         private void btn_Done_AddGrade_Click(object sender, RoutedEventArgs e)
         {
             if(cmb_Subject_AddGrade.SelectedIndex != -1 && grade != 0)
             {
+                if(edit)
+                {
+                    GradeManager.DeleteGrade(edit_id);
+                }
                 Subject selected_subject = (Subject)cmb_Subject_AddGrade.SelectedItem;
                 GradeType selected_gradetype = (GradeType)cmb_GradeType_AddGrade.SelectedItem;
                 Grade new_grade = new Grade(selected_subject.id, grade, dtp_Date_AddGrade.Date, selected_gradetype);
                 new_grade.AddGrade();
-                Frame.Navigate(typeof(Grades));
+                Frame.GoBack();
             } else
             {
                 GradeManager.not_completed_dialog();

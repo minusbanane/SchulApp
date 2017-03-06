@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -36,7 +37,6 @@ namespace SchulApp
 
             dtSmall = (DataTemplate)Resources["dtm_GradeList_Grades"];
             dtEnlarged = (DataTemplate)Resources["dtm_GradeDetail_Grades"];
-
         }
         
         private void btn_AddGrade_Grades_Click(object sender, RoutedEventArgs e)
@@ -52,17 +52,28 @@ namespace SchulApp
 
         private void lvw_Grades_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-          //  lvw_Grades.ItemTemplate = dtEnlarged;
+            if(lvw_Grades.SelectionMode == ListViewSelectionMode.Single && lvw_Grades.SelectedIndex != -1)
+            {
+                ListView listview = (ListView)sender;
+                ItemsStackPanel itemspanel = (ItemsStackPanel)listview.ItemsPanelRoot;
+                ListViewItem item = (ListViewItem)itemspanel.Children[(sender as ListView).SelectedIndex];
+                Grid rootgrid = (Grid)item.ContentTemplateRoot;
+
+                toggle_StackPanel(((rootgrid.Children[1] as Grid).Children[0] as StackPanel));
+            }
         }
 
-        private void btn_Delete_Grades_Click(object sender, RoutedEventArgs e)
-        { 
-            foreach(Grade grade in lvw_Grades.SelectedItems)
+        private async void btn_Delete_Grades_Click(object sender, RoutedEventArgs e)
+        {
+            if (await delete_grades() == ContentDialogResult.Secondary)
             {
-                GradeManager.DeleteGrade(grade.id);
+                foreach (Grade grade in lvw_Grades.SelectedItems)
+                {
+                    GradeManager.DeleteGrade(grade.id);
+                }
+                Frame.Navigate(this.GetType());
+                Frame.GoBack();
             }
-            Frame.Navigate(this.GetType());
-            Frame.GoBack(); 
         }
 
         public async void no_subjects_created()
@@ -75,46 +86,80 @@ namespace SchulApp
         }
 
         private void btn_SelectionList_Grades_Click(object sender, RoutedEventArgs e)
-        { 
+        {
+            lvw_Grades.SelectionMode = ListViewSelectionMode.Multiple;
+            btn_Delete_Grades.Visibility = Visibility.Visible;
+            btn_CloseMultipleSelection_Grades.Visibility = Visibility.Visible;
+            btn_SelectionList_Grades.Visibility = Visibility.Collapsed;
+            if(open != null)
+            {
+                close_StackPanel(open);
+            }
         }
 
         private void btn_CloseMultipleSelection_Grades_Click(object sender, RoutedEventArgs e)
-        { 
+        {
+            lvw_Grades.SelectionMode = ListViewSelectionMode.Single;
+            btn_Delete_Grades.Visibility = Visibility.Collapsed;
+            btn_CloseMultipleSelection_Grades.Visibility = Visibility.Collapsed;
+            btn_SelectionList_Grades.Visibility = Visibility.Visible;
         }
 
-        private void lvw_Grades_ItemClick(object sender, ItemClickEventArgs e)
+        private void toggle_StackPanel(StackPanel stackpanel)
         {
-        }
-
-        private void btn_MoreInfos_Click(object sender, RoutedEventArgs e)
-        {
-            StackPanel more_info = (StackPanel)((sender as Button).Parent as Grid).Children[1];
-            if(more_info.Visibility == Visibility.Collapsed)
+            if(stackpanel.Visibility == Visibility.Collapsed)
             {
                 if (open != null)
                 {
                     close_StackPanel(open);
                 }
-                open_StackPanel(more_info);
+                open_StackPanel(stackpanel);
             }
             else
             {
-                close_StackPanel(more_info);
+                close_StackPanel(stackpanel);
             }
         }
 
         private void close_StackPanel(StackPanel stackpanel)
         {
             stackpanel.Visibility = Visibility.Collapsed;
-            ((stackpanel.Parent as Grid).Children[0] as Button).Content = "Mehr Infos";
             open = null;
         }
 
         private void open_StackPanel(StackPanel stackpanel)
         {
             stackpanel.Visibility = Visibility.Visible;
-            ((stackpanel.Parent as Grid).Children[0] as Button).Content = "Weniger Infos";
             open = stackpanel;
+        }
+
+        private async void btn_DeleteGrade_Grades_Click(object sender, RoutedEventArgs e)
+        {
+            if(await delete_grades() == ContentDialogResult.Secondary)
+            {
+                GradeManager.DeleteGrade((lvw_Grades.SelectedItem as Grade).id);
+                Frame.Navigate(this.GetType());
+                Frame.GoBack();
+            }
+        }
+
+        public static async Task<ContentDialogResult> delete_grades()
+        {
+            ContentDialog no_subject_created = new ContentDialog()
+            {
+                Title = "Note löschen?",
+                Content = "Bist du dir sicher, dass du diese Note(n) löschen willst? Das kannst du nicht rückgängig machen!",
+                PrimaryButtonText = "Abbrechen",
+                SecondaryButtonText = "Ich bin sicher"
+            };
+
+            ContentDialogResult result = await no_subject_created.ShowAsync();
+            return result;
+        }
+
+        private void btn_EditGrade_Grades_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AddGrade), (lvw_Grades.SelectedItem as Grade).id);
         }
     }
 }

@@ -23,10 +23,27 @@ namespace SchulApp
     /// </summary>
     public sealed partial class AddLesson : Page
     {
+        private Lesson edit_lesson;
+
         public AddLesson()
         {
             this.InitializeComponent();
             fill_data();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is Lesson)
+            {
+                Lesson stunde = (Lesson)e.Parameter;
+                edit_lesson = (Lesson)e.Parameter;
+                cmb_Day_AddLesson.SelectedIndex = (int)stunde.day - 1;
+                cmb_LessonTime_AddLesson.SelectedItem = LessonTimeManager.GetLessonTimes().Find(x => x.lesson_number == stunde.lesson_time.lesson_number);
+                cmb_Subject_AddLesson.SelectedItem = stunde.subject;
+            } else if(e.Parameter is int)
+            {
+                cmb_Day_AddLesson.SelectedIndex = (int)e.Parameter;
+            }
         }
 
         public void fill_data()
@@ -42,8 +59,9 @@ namespace SchulApp
             }
         }
 
-        private void btn_Done_AddLesson_Click(object sender, RoutedEventArgs e)
+        private async void btn_Done_AddLesson_Click(object sender, RoutedEventArgs e)
         {
+            bool cont = true;
             int daynumber = cmb_Day_AddLesson.SelectedIndex;
             DayOfWeek day = DayOfWeek.Monday;
             bool day_complete = true;
@@ -98,10 +116,30 @@ namespace SchulApp
                 LessonManager.not_completed_dialog();
             } else
             {
-                LessonManager.AddLesson(new Lesson { day = day, lesson_time = lessontime, subject_id = subject.id });
+                if(LessonManager.GetLesson(day, lessontime) != null)
+                {
+                    ContentDialogResult result = await LessonManager.already_exists_dialog();
+                    if(result == ContentDialogResult.Secondary)
+                    {
+                        edit_lesson = LessonManager.GetLesson(day, lessontime);
+                    } else
+                    {
+                        cont = false;
+                    }
+                }
+                if(cont)
+                {
+                    if (edit_lesson != null)
+                    {
+                        LessonManager.DeleteLesson(edit_lesson.day, edit_lesson.lesson_time);
+                    }
+                    LessonManager.AddLesson(new Lesson { day = day, lesson_time = lessontime, subject_id = subject.id });
+                }
             }
-
-            Frame.GoBack();
+            if(cont)
+            {
+                Frame.GoBack();
+            }
         }
     }
 }

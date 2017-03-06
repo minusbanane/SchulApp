@@ -25,7 +25,7 @@
                     <Button Name="btn_Help_LessonNumber_AddGrade_Timetable_Settings"  Content="?" Margin="0,0,0,10"/>
                 </StackPanel>
                 <TextBlock Text="Stundenbeginn:"/>
-                <TimePicker Name="tmp_Starttime_AddLesson_Timetable_Settings" Margin="0,0,0,10" TimeChanged="tmp_Time_AddLesson_Timetable_Settings_TimeChanged"/>
+                <TimePicker Name="tmp_Starttime_AddLesson_Timetable_Settings" Margin="0,0,0,10" TimeChanged="tmp_Time_AddLesson_Timetable_Settings_TimeChanged" ClockIdentifier="12HourClock"/>
                 <TextBlock Text="Stundenende:" />
                 <TimePicker Name="tmp_Endtime_AddLesson_Timetable_Settings" Margin="0,0,0,10" TimeChanged="tmp_Time_AddLesson_Timetable_Settings_TimeChanged"/>
                 <TextBlock Name="tbk_Time_AddLesson_Timetable_Settings" Text="-"  Foreground="DarkGray" />

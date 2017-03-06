@@ -71,17 +71,6 @@ namespace SchulApp
             spv_SplitView_MainPage.IsPaneOpen = false;
         }
 
-        private void btn_Save_MainPage_Click(object sender, RoutedEventArgs e)
-        {
-            btn_Save_MainPage.IsEnabled = false;
-            pgr_MainPage.IsActive = true;
-            pgr_MainPage.Visibility = Visibility.Visible;
-            MyData.SaveMyData();
-            pgr_MainPage.Visibility = Visibility.Visible;
-            pgr_MainPage.IsActive = false;
-            btn_Save_MainPage.IsEnabled = true;
-        }
-
         public void set_title(string text)
         {
             tbk_Header_MainPage.Text = text;
@@ -94,22 +83,27 @@ namespace SchulApp
             if (page == typeof(Home))
             {
                 tbk_Header_MainPage.Text = "Home";
+                lbx_SplitView_MainPage.SelectedItem = Home;
             }
             if (page == typeof(Subjects) || page == typeof(SubjectDetail) || page == typeof(AddSubject) || page == typeof(EditSubject))
             {
                 tbk_Header_MainPage.Text = "Fächer";
+                lbx_SplitView_MainPage.SelectedItem = Subjects;
             }
             if (page == typeof(Grades) || page == typeof(AddGrade))
             {
                 tbk_Header_MainPage.Text = "Noten";
+                lbx_SplitView_MainPage.SelectedItem = Grades;
             }
             if (page == typeof(Timetable) || page == typeof(AddLesson) || page == typeof(LessonTimes) || page == typeof(AddLessonTime))
             {
                 tbk_Header_MainPage.Text = "Stundenplan";
+                lbx_SplitView_MainPage.SelectedItem = Timetable;
             }
             if (page == typeof(Settings))
             {
                 tbk_Header_MainPage.Text = "Einstellungen";
+                lbx_SplitView_MainPage.SelectedItem = Settings;
             }
 
             if(frm_Content.CanGoBack)

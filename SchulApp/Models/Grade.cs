@@ -20,10 +20,9 @@ namespace SchulApp.Models
         [DataMember]
         public DateTimeOffset date { get; set; }
         [DataMember]
-        public string readable_date { get { return this.date.Day.ToString() + "." + this.date.Month.ToString() + "." + this.date.Year.ToString(); } }
-        [DataMember]
         public GradeType type { get; set; }
         public Subject subject { get{ return SubjectManager.GetSubject(this.subject_id); } }
+        public string readable_date { get { return this.date.Day.ToString() + "." + this.date.Month.ToString() + "." + this.date.Year.ToString(); } }
 
         public Grade(int given_subject_id, int given_grade, DateTimeOffset given_date, GradeType given_type)
         {
@@ -80,6 +79,11 @@ namespace SchulApp.Models
             return return_list;
         }
 
+        public static Grade GetGrade(int given_id)
+        {
+            return MyData.my_grades_list.Find(x => x.id == given_id);
+        }
+
         public static List<Grade> GetAllGrades()
         {
             List<Grade> grades_list = MyData.my_grades_list;
@@ -127,7 +131,7 @@ namespace SchulApp.Models
             {
                 this.typename = "normaltest";
                 this.readable_typename = "Test";
-                this.typeid = 2;
+                this.typeid = 0;
                 this.rate = 50;
             }
 
@@ -135,7 +139,7 @@ namespace SchulApp.Models
             {
                 this.typename = "classwork";
                 this.readable_typename = "Klassenarbeit";
-                this.typeid = 2;
+                this.typeid = 1;
                 this.rate = 50;
             }
         }

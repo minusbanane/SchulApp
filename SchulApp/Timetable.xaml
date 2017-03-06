@@ -19,7 +19,12 @@
 
     <Page.Resources>
         <DataTemplate x:Key="dtm_LessonsList" x:DataType="data:Lesson">
-            <Grid Padding="0,5,0,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Padding="0,5,0,5" Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -37,34 +42,39 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-            </DataTemplate>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Padding="0,5,0,5" Visibility="Collapsed">
+                    <Button Name="btn_EditLesson_Grades" Click="btn_EditLesson_Lessons_Click" Content="Bearbeiten" Margin="0,0,5,0"/>
+                    <Button Name="btn_DeleteLesson_Grades" Click="btn_DeleteLesson_Lessons_Click" Content="Löschen"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10,10,0,0">
-        <Pivot Title="" Padding="0,-30,0,0">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot Name="pvt_TimeTable" Title="" Padding="0,-30,0,0" SelectionChanged="Pivot_SelectionChanged" >
             <PivotItem Header="Montag">
                 <Grid>
-                    <ListView Name="lvw_Lessons_Monday" ItemsSource="{x:Bind monday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" />
+                    <ListView Name="lvw_Lessons_Monday" ItemsSource="{x:Bind monday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" SelectionMode="Single" SelectionChanged="lvw_Lessons_Monday_SelectionChanged"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Dienstag">
                 <Grid>
-                    <ListView Name="lvw_Lessons_Tuesday" ItemsSource="{x:Bind tuesday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" />
+                    <ListView Name="lvw_Lessons_Tuesday" ItemsSource="{x:Bind tuesday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" SelectionMode="Single" SelectionChanged="lvw_Lessons_Monday_SelectionChanged" />
                 </Grid>
             </PivotItem>
             <PivotItem Header="Mittwoch">
                 <Grid>
-                    <ListView Name="lvw_Lessons_Wednesday" ItemsSource="{x:Bind wednesday_list}"  ItemTemplate="{StaticResource dtm_LessonsList}" />
+                    <ListView Name="lvw_Lessons_Wednesday" ItemsSource="{x:Bind wednesday_list}"  ItemTemplate="{StaticResource dtm_LessonsList}" SelectionMode="Single" SelectionChanged="lvw_Lessons_Monday_SelectionChanged" />
                 </Grid>
             </PivotItem>
             <PivotItem Header="Donnerstag">
                 <Grid>
-                    <ListView Name="lvw_Lessons_Thursday" ItemsSource="{x:Bind thursday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" />
+                    <ListView Name="lvw_Lessons_Thursday" ItemsSource="{x:Bind thursday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" SelectionMode="Single" SelectionChanged="lvw_Lessons_Monday_SelectionChanged" />
                 </Grid>
             </PivotItem>
             <PivotItem Header="Freitag">
                 <Grid>
-                    <ListView Name="lvw_Lessons_Friday" ItemsSource="{x:Bind friday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" />
+                    <ListView Name="lvw_Lessons_Friday" ItemsSource="{x:Bind friday_list}" ItemTemplate="{StaticResource dtm_LessonsList}" SelectionMode="Single" SelectionChanged="lvw_Lessons_Monday_SelectionChanged" />
                 </Grid>
             </PivotItem>
         </Pivot>

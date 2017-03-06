@@ -48,7 +48,7 @@ namespace SchulApp
 
         private void btn_Cancel_EditSubject_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(Subjects));
+            Frame.GoBack();
         }
     }
 }

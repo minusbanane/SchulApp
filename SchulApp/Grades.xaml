@@ -22,7 +22,7 @@
     </Page.BottomAppBar>
 
     <Page.Resources>
-        <DataTemplate x:Key="dtm_GradeList_Grades" x:DataType="data:Grade"> 
+        <DataTemplate x:Key="dtm_GradeList_Grades" x:DataType="data:Grade">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -40,15 +40,10 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Button Content="Mehr Infos" Style="{StaticResource TextBlockButtonStyle}" Click="btn_MoreInfos_Click" Grid.Row="1"></Button>
-                    <StackPanel Visibility="Collapsed" Grid.Row="0">
+                    <StackPanel Visibility="Collapsed" Grid.Row="0" Margin="0,0,0,10">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE163;" VerticalAlignment="Center" Margin="0,0,5,0" />
-                            <TextBlock Text="{x:Bind readable_date}" Foreground="DarkGray" VerticalAlignment="Center"/>
+                            <Button Name="btn_EditGrade_Grades" Click="btn_EditGrade_Grades_Click" Content="Bearbeiten" Margin="0,0,5,0"/>
+                            <Button Name="btn_DeleteGrade_Grades" Click="btn_DeleteGrade_Grades_Click" Content="Löschen"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -64,27 +59,8 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Orientation="Vertical">
-            <!--<ListView 
-                Name="lvw_Grades" 
-                ItemsSource="{x:Bind grades}" 
-                SelectionMode="Multiple"
-                SelectionChanged="lvw_Grades_SelectionChanged" 
-                ItemClick="lvw_Grades_ItemClick"
-                Visibility="Visible"
-            >
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="data:Grade">
-                        <controls:Expander Header="{StaticResource dtm_GradeList_Grades}" IsExpanded="False" >
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{x:Bind grade}" />
-                                <TextBlock Text="{x:Bind subject.subject_name}" />
-                            </StackPanel>
-                        </controls:Expander>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
-            <ListView Name="lvw_Grades" ItemsSource="{x:Bind grades}" SelectionMode="None" ItemTemplate="{StaticResource dtm_GradeList_Grades}" SelectionChanged="lvw_Grades_SelectionChanged" ItemClick="lvw_Grades_ItemClick" IsItemClickEnabled="True"></ListView>
+        <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListView Name="lvw_Grades" ItemsSource="{x:Bind grades}" SelectionMode="Single" ItemTemplate="{StaticResource dtm_GradeList_Grades}" SelectionChanged="lvw_Grades_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Disabled" ></ListView>
             <TextBlock Name="tbk_Hinweis" Text="Tippe auf eine Note, um weitere Details anzuzeigen!" HorizontalAlignment="Center" TextWrapping="Wrap" Foreground="Gray" Margin="15,10,15,0" TextAlignment="Center"/>
         </StackPanel>
     </Grid>
