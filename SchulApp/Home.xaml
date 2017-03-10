@@ -10,24 +10,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
         <ListView x:Name="lvw_Average_Home" SelectionMode="None" >
-            <controls:RadialGauge x:Name="rdg_Average_Home"
-                                      MaxWidth="250"
-                                      Height="Auto"
-                                  IsInteractive="False"
-                                  Maximum="6.00"
-                                  MinAngle="-80"
-                                  MaxAngle="80"
-                                  Minimum="1.00"
-                                  TrailBrush="#FF00A2FF"
-                                  Unit="Gesamtdurchschnitt"
-                                  TickSpacing="1"
-                                  TickBrush="Transparent"
-                                  NeedleBrush="Transparent"
-                                  NeedleWidth="0"
-                                  NeedleLength="0"
-                                  TickWidth="0"
-                                  Value="{x:Bind rdg_average_value}"
-                                  StepSize="4"/>
+            <controls:HeaderedTextBlock x:Name="htb_Average_Home" Header="Gesamter Durchschnitt:" Text="-" />
             <controls:HeaderedTextBlock x:Name="htb_BestSubject_Home"
                                         Header="Bestes Fach"
                                         Text="-"/>

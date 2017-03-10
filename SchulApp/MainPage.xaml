@@ -16,7 +16,9 @@
 
         <RelativePanel Name="rlp_Header_MainPage" Grid.Row="0" Background="{ThemeResource AppBarBackground}">
             <Button Name="btn_Hamburger_MainPage" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Background="Transparent" Padding="10,10,10,10" Click="btn_Hamburger_MainPage_Click" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" Width="48" Height="48"/>
-            <TextBlock Name="tbk_Header_MainPage" Text="Home" RelativePanel.RightOf="btn_Hamburger_MainPage" Padding="10,10,10,10" FontSize="24" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <TextBlock Name="tbk_Header_MainPage" Text="Home" RelativePanel.RightOf="btn_Hamburger_MainPage" Padding="0,10,10,10" FontSize="24" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button RelativePanel.RightOf="tbk_Header_MainPage" Name="btn_Save_MainPage" Content="Speichern" Click="btn_Save_MainPage_Click" Visibility="Collapsed"/>
+            <Button RelativePanel.RightOf="btn_Save_MainPage" Name="btn_Load_MainPage" Content="Laden" Click="btn_Load_MainPage_Click" Visibility="Collapsed"/>
         </RelativePanel>
 
         <SplitView Name="spv_SplitView_MainPage"
@@ -25,35 +27,35 @@
                    CompactPaneLength="0"
                    Grid.Row="1">
             <SplitView.Pane>
-                <ListBox Name="lbx_SplitView_MainPage" SelectionMode="Single" SelectionChanged="lbx_SplitView_MainPage_SelectionChanged" Background="{ThemeResource AppBarButtonBackground}">
+                <ListBox Name="lbx_SplitView_MainPage" SelectionMode="Single" SelectionChanged="lbx_SplitView_MainPage_SelectionChanged" Background="{ThemeResource AppBarBackground}">
                         <ListBoxItem Name="Home" Padding="0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE10F;" FontFamily="Segoe MDL2 Assets" Padding="10" FontSize="24" VerticalAlignment="Center"/>
-                                <TextBlock Text="Home" FontSize="24" Padding="10" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE10F;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" FontSize="16px" Margin="16"  VerticalAlignment="Center"/>
+                                <TextBlock Text="Home" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" Padding="0,10,10,10" VerticalAlignment="Center"/>
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Name="Subjects" Padding="0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" Padding="10" FontSize="24" VerticalAlignment="Center"/>
-                                <TextBlock Text="Fächer" FontSize="24" Padding="10" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" FontSize="16px" Margin="16"  VerticalAlignment="Center"/>
+                                <TextBlock Text="Fächer" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" Padding="0,10,10,10" VerticalAlignment="Center"/>
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Name="Grades" Padding="0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8DF;" FontFamily="Segoe MDL2 Assets" Padding="10" FontSize="24" VerticalAlignment="Center"/>
-                                <TextBlock Text="Noten" FontSize="24" Padding="10" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE8DF;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" FontSize="16px" Margin="16"  VerticalAlignment="Center"/>
+                                <TextBlock Text="Noten" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" Padding="0,10,10,10" VerticalAlignment="Center"/>
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Name="Timetable" Padding="0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE163;" FontFamily="Segoe MDL2 Assets" Padding="10" FontSize="24" VerticalAlignment="Center"/>
-                                <TextBlock Text="Stundenplan" FontSize="24" Padding="10" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE163;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" FontSize="16px" Margin="16"  VerticalAlignment="Center"/>
+                                <TextBlock Text="Stundenplan" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" Padding="0,10,10,10" VerticalAlignment="Center"/>
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Name="Settings" Padding="0" VerticalAlignment="Bottom">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE115;" FontFamily="Segoe MDL2 Assets" Padding="10" FontSize="24" VerticalAlignment="Center" />
-                                <TextBlock Text="Einstellungen" FontSize="24" Padding="10" VerticalAlignment="Center" />
+                                <TextBlock Text="&#xE115;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" FontSize="16px" Margin="16"  VerticalAlignment="Center"/>
+                                <TextBlock Text="Einstellungen" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}" Padding="0,10,10,10" VerticalAlignment="Center" />
                             </StackPanel>
                         </ListBoxItem>
                     </ListBox>

@@ -33,9 +33,7 @@ namespace SchulApp.Models
 
         private void btn_Edit_SubjectDetail_Click(object sender, RoutedEventArgs e)
         {
-            var current_subject = subject_to_show;
-            SubjectManager.selected_subject_id = current_subject.id;
-            Frame.Navigate(typeof(EditSubject));
+            Frame.Navigate(typeof(AddSubject), subject_to_show);
         }
 
         private void btn_Delete_SubjectDetail_Click(object sender, RoutedEventArgs e)

@@ -17,8 +17,8 @@
         </CommandBar>
     </Page.BottomAppBar>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsVerticalRailEnabled="True">
-            <StackPanel Orientation="Vertical" Margin="10,10,10,10" ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollMode="Auto">
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsVerticalRailEnabled="True" Padding="10">
+            <StackPanel Orientation="Vertical" ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollMode="Auto">
                 <TextBlock Text="Fach hinzufügen" Style="{StaticResource HeaderTextBlockStyle}"/>
                 <TextBlock Text="Name" Style="{StaticResource SubheaderTextBlockStyle}" />
                 <TextBox Name="tbx_Name_AddSubject" Margin="0,0,0,10"/>

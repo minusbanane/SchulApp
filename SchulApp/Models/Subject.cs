@@ -28,7 +28,7 @@ namespace SchulApp.Models
         public string teacher { get; set; }
         [DataMember]
         public SubjectColor color { get; set; }
-        public decimal average { get { return SubjectManager.GetAverage(this.id); }}
+        public decimal average { get { return SubjectManager.GetAverage(this.id); } }
         public List<Grade> grades { get { return GradeManager.GetGradesBySubject(this.id); } }
         public string first_letter { get { return this.subject_name[0].ToString(); }}
 
@@ -98,7 +98,6 @@ namespace SchulApp.Models
 
         public static void DeleteSubject(int id)
         {
-            MyData.my_subjects_list.Remove(MyData.my_subjects_list.Find(x => x.id == id));
             List<Grade> grades = GradeManager.GetGradesBySubject(id);
             foreach(Grade grade in grades)
             {
@@ -109,6 +108,7 @@ namespace SchulApp.Models
             {
                 LessonManager.DeleteLesson(lesson.day, lesson.lesson_time);
             }
+            MyData.my_subjects_list.Remove(MyData.my_subjects_list.Find(x => x.id == id));
         }
 
         public static bool EditSubject(int given_id, string new_subject_name, string new_teacher, SubjectColor new_color)

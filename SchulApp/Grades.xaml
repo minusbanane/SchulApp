@@ -59,9 +59,11 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ListView Name="lvw_Grades" ItemsSource="{x:Bind grades}" SelectionMode="Single" ItemTemplate="{StaticResource dtm_GradeList_Grades}" SelectionChanged="lvw_Grades_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Disabled" ></ListView>
-            <TextBlock Name="tbk_Hinweis" Text="Tippe auf eine Note, um weitere Details anzuzeigen!" HorizontalAlignment="Center" TextWrapping="Wrap" Foreground="Gray" Margin="15,10,15,0" TextAlignment="Center"/>
-        </StackPanel>
+        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <ListView Name="lvw_Grades" ItemsSource="{x:Bind grades}" SelectionMode="Single" ItemTemplate="{StaticResource dtm_GradeList_Grades}" SelectionChanged="lvw_Grades_SelectionChanged" ></ListView>
+                <TextBlock Name="tbk_Hinweis" Text="Tippe auf eine Note, um weitere Details anzuzeigen!" HorizontalAlignment="Center" TextWrapping="Wrap" Foreground="Gray" Margin="15,10,15,10" TextAlignment="Center"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

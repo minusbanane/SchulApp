@@ -119,5 +119,15 @@ namespace SchulApp
         {
             try { frm_Content.GoBack(); } catch { }
         }
+
+        private void btn_Save_MainPage_Click(object sender, RoutedEventArgs e)
+        {
+            MyData.SaveMyData();
+        }
+
+        private void btn_Load_MainPage_Click(object sender, RoutedEventArgs e)
+        {
+            MyData.LoadMyData();
+        }
     }
 }

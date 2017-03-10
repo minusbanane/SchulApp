@@ -42,7 +42,7 @@ namespace SchulApp.Models
 
         public static List<Lesson> GetLessonsBySubject(int subject_id)
         {
-            List<Lesson> lessons_list = MyData.my_lessons_list.FindAll(x => x.subject.id == subject_id);
+            List<Lesson> lessons_list = MyData.my_lessons_list.FindAll(x => x.subject_id == subject_id);
             List<Lesson> return_list = new List<Lesson> { };
             foreach (Lesson lesson in lessons_list)
             {
@@ -98,7 +98,7 @@ namespace SchulApp.Models
         [DataMember]
         public int second { get; set; }
 
-        public Time(int hour = 0, int minute = 0, int second = 0)
+        public void setTime(int hour = 0, int minute = 0, int second = 0)
         {
             if(0 >= hour || hour < 24)
             {
@@ -165,7 +165,7 @@ namespace SchulApp.Models
         public string readable_end_time { get { return this.end_time.ToString(); } }
         public string readable_total_time { get { string hour = " Stunde "; string minute = " Minute"; if (this.total_time.Hours > 1 || this.total_time.Hours == 0) { hour = " Stunden "; } if (this.total_time.Minutes > 1 || this.total_time.Minutes == 0) { minute = " Minuten"; } return this.total_time.Hours + hour + this.total_time.Minutes + minute; } }
 
-        public LessonTime(int given_lesson_number, Time given_start_time, Time given_end_time, bool given_show_as_double)
+        public void setLessonTime(int given_lesson_number, Time given_start_time, Time given_end_time, bool given_show_as_double)
         {
             this.lesson_number = given_lesson_number;
             this.start_time = given_start_time;

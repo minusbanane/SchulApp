@@ -58,7 +58,12 @@ namespace SchulApp
                 LessonTimeManager.DeleteLessonTime(edit_lessontime);
             }
             bool exeption_comes = false;
-            LessonTime new_lesson_time = new LessonTime(int.Parse(tbx_LessonNumber_AddGrade_Timetable_Settings.Text), new Time(starttime.Hours, starttime.Minutes), new Time(endtime.Hours, endtime.Minutes) , tgs_DoubleLesson_AddLessonTime.IsOn);
+            Time startTime = new Time();
+            startTime.setTime(starttime.Hours, starttime.Minutes);
+            Time endTime = new Time();
+            endTime.setTime(endtime.Hours, endtime.Minutes);
+            LessonTime new_lesson_time = new LessonTime();
+            new_lesson_time.setLessonTime(int.Parse(tbx_LessonNumber_AddGrade_Timetable_Settings.Text), startTime, endTime , tgs_DoubleLesson_AddLessonTime.IsOn);
             try
             {
                 new_lesson_time.Save();

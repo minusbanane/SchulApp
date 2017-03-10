@@ -30,7 +30,7 @@ namespace SchulApp
         {
             this.InitializeComponent();
 
-            rdg_average_value = GetTotalAverage();
+            htb_Average_Home.Text = GetTotalAverage().ToString();
             SetBestSubjects();
         }
 

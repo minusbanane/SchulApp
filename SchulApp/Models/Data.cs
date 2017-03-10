@@ -2,15 +2,125 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Microsoft.Toolkit.Uwp;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace SchulApp.Models
 {
+    public class Setting<T>
+    {
+        private DataContractSerializer serializer;
+        public Setting()
+        {
+            serializer = new DataContractSerializer(typeof(T));
+        }
+        private string FileName(T Obj, string Handle)
+        {
+            var str = String.Concat(Handle, String.Format("{0}", Obj.GetType().ToString()));
+            return str;
+        }
+
+        public async Task SaveAsync(string Key, T Obj)
+        {
+            string fileName = FileName(Activator.CreateInstance<T>(), Key);
+            try
+            {
+                if (Obj != null)
+                {
+                    StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                    IRandomAccessStream writeStream = await file.OpenAsync(FileAccessMode.ReadWrite);
+                    using (Stream outStream = Task.Run(() => writeStream.AsStreamForWrite()).Result)
+                    {
+                        serializer.WriteObject(outStream, Obj);
+                        await outStream.FlushAsync();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Delete a stored instance of T from Windows.Storage.ApplicationData
+        /// </summary>
+        /// <returns></returns>
+        public async Task DeleteAsync()
+        {
+            string fileName = FileName(Activator.CreateInstance<T>(), String.Empty);
+            await DeleteAsync(fileName);
+        }
+
+        /// <summary>
+        /// Delete a stored instance of T with a specified handle from Windows.Storage.ApplicationData.
+        /// Specification of a handle supports storage and deletion of different instances of T.
+        /// </summary>
+        /// <param name="Handle">User-defined handle for the stored object</param>
+        public async Task DeleteAsync(string Key)
+        {
+            if (Key == null)
+                throw new ArgumentNullException("Handle");
+            string fileName = FileName(Activator.CreateInstance<T>(), Key);
+            try
+            {
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+                if (file != null)
+                {
+                    await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieve a stored instance of T with a specified handle from Windows.Storage.ApplicationData.
+        /// Specification of a handle supports storage and deletion of different instances of T.
+        /// </summary>
+        /// <param name="Handle">User-defined handle for the stored object</param>
+        public async Task<T> LoadAsync(string Key)
+        {
+            string fileName = FileName(Activator.CreateInstance<T>(), Key);
+
+            try
+            {
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+                IRandomAccessStream readStream = await file.OpenAsync(FileAccessMode.Read);
+                if(readStream == null)
+                {
+                    return default(T);
+                }
+                using (Stream inStream = Task.Run(() => readStream.AsStreamForRead()).Result)
+                {
+                    return (T)serializer.ReadObject(inStream);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                //file not existing is perfectly valid so simply return the default 
+                return default(T);
+                //Interesting thread here: How to detect if a file exists (http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/1eb71a80-c59c-4146-aeb6-fefd69f4b4bb)
+                //throw;
+            }
+            catch (Exception)
+            {
+                //Unable to load contents of file
+                throw;
+            }
+        }
+    }
+
+
+
+
     public static class MyData
     {
         public static List<Subject> my_subjects_list = new List<Subject> { };
@@ -18,176 +128,48 @@ namespace SchulApp.Models
         public static List<LessonTime> my_lessontimes_list = new List<LessonTime> { };
         public static List<Lesson> my_lessons_list = new List<Lesson> { };
 
-        public static void LoadMyData()
+        public static async void LoadMyData()
         {
-            LoadSubjects();
-            LoadGrades();
-            LoadLessons();
-            LoadLessonTimes();
+            my_subjects_list = await Load<List<Subject>>("subjects", my_subjects_list);
+            my_grades_list = await Load<List<Grade>>("grades", my_grades_list);
+            my_lessons_list = await Load<List<Lesson>>("lessons", my_lessons_list);
+            my_lessontimes_list = await Load<List<LessonTime>>("lessontimes", my_lessontimes_list);
         }
 
         public static void SaveMyData()
         {
-            if(my_subjects_list.Count() != 0)
-            {
-                SaveSubjects();
-            } else
-            {
-                DeleteFile("subjects_list");
-            }
+            Save<Subject>(my_subjects_list, "subjects");
+            Save<Grade>(my_grades_list, "grades");
+            Save<Lesson>(my_lessons_list, "lessons");
+            Save<LessonTime>(my_lessontimes_list, "lessontimes");
+        }
 
-            if (my_grades_list.Count() != 0)
+        public static async void Save<T>(List<T> list, string filename)
+        {
+            var helper = new LocalObjectStorageHelper();
+            if (list.Count != 0)
             {
-                SaveGrades();
+                await helper.SaveFileAsync(filename, list);
             }
             else
             {
-                DeleteFile("grades_list");
-            }
-
-            if (my_lessons_list.Count() != 0)
-            {
-                SaveLessons();
-            }
-            else
-            {
-                DeleteFile("lessons_list");
-            }
-
-            if (my_lessontimes_list.Count() != 0)
-            {
-                SaveLessonTimes();
-            }
-            else
-            {
-                DeleteFile("lessontimes_list");
+                if (await StorageFileHelper.FileExistsAsync(ApplicationData.Current.LocalFolder, filename))
+                {
+                    StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
+                    await file.DeleteAsync();
+                }
             }
         }
 
-        public static async void DeleteFile(string file_name)
+        public static async Task<T> Load<T>(string filename, T list)
         {
-            if(await StorageFileHelper.FileExistsAsync(ApplicationData.Current.LocalFolder, file_name))
+            var helper = new LocalObjectStorageHelper();
+            if (await helper.FileExistsAsync(filename))
             {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(file_name);
-                await file.DeleteAsync();
+               return await helper.ReadFileAsync<T>(filename);
             }
+
+            return list;
         }
-
-        public static async void LoadSubjects()
-        {
-            if(await StorageFileHelper.FileExistsAsync(ApplicationData.Current.LocalFolder, "subjects_list"))
-            {
-                StorageFile grades_file = await ApplicationData.Current.LocalFolder.GetFileAsync("subjects_list");
-                IRandomAccessStream inStream = await grades_file.OpenReadAsync();
-
-                DataContractSerializer deserializer = new DataContractSerializer(typeof(List<Subject>));
-                my_subjects_list = (List<Subject>)deserializer.ReadObject(inStream.AsStreamForRead());
-                inStream.Dispose();
-            }
-        }
-
-        public static async void LoadGrades()
-        {
-            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync("grades_list") != null)
-            {
-                StorageFile grades_file = await ApplicationData.Current.LocalFolder.GetFileAsync("grades_list");
-                IRandomAccessStream inStream = await grades_file.OpenReadAsync();
-
-                DataContractSerializer deserializer = new DataContractSerializer(typeof(List<Grade>));
-                my_grades_list = (List<Grade>)deserializer.ReadObject(inStream.AsStreamForRead());
-                inStream.Dispose();
-            }
-        }
-
-        public static async void LoadLessonTimes()
-        {
-            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync("lessontimes_list") != null)
-            {
-                StorageFile lessontimes_file = await ApplicationData.Current.LocalFolder.GetFileAsync("lessontimes_list");
-                IRandomAccessStream inStream = await lessontimes_file.OpenReadAsync();
-
-                DataContractSerializer deserializer = new DataContractSerializer(typeof(List<LessonTime>));
-                my_lessontimes_list = (List<LessonTime>)deserializer.ReadObject(inStream.AsStreamForRead());
-                inStream.Dispose();
-            }
-        }
-
-        public static async void LoadLessons()
-        {
-            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync("lessons_list") != null)
-            {
-                StorageFile lessons_file = await ApplicationData.Current.LocalFolder.GetFileAsync("lessons_list");
-                IRandomAccessStream inStream2 = await lessons_file.OpenReadAsync();
-
-                DataContractSerializer deserializer2 = new DataContractSerializer(typeof(List<Lesson>));
-                my_lessons_list = (List<Lesson>)deserializer2.ReadObject(inStream2.AsStreamForRead());
-                inStream2.Dispose();
-            }
-        }
-
-        public static async void SaveSubjects()
-        {
-            List<Subject> subjects_list = my_subjects_list;
-            StorageFile subjects_file = await ApplicationData.Current.LocalFolder.CreateFileAsync("subjects_list", CreationCollisionOption.OpenIfExists);
-
-            IRandomAccessStream raStream = await subjects_file.OpenAsync(FileAccessMode.ReadWrite);
-            using (IOutputStream outStream = raStream.GetOutputStreamAt(0))
-            {
-                DataContractSerializer serializer = new DataContractSerializer(typeof(List<Subject>));
-                serializer.WriteObject(outStream.AsStreamForWrite(), subjects_list);
-                await outStream.FlushAsync();
-                outStream.Dispose();
-            }
-            raStream.Dispose();
-        }
-
-        public static async void SaveGrades()
-        {
-            List<Grade> grades_list = my_grades_list;
-            StorageFile grades_file = await ApplicationData.Current.LocalFolder.CreateFileAsync("grades_list", CreationCollisionOption.OpenIfExists);
-
-            IRandomAccessStream raStream = await grades_file.OpenAsync(FileAccessMode.ReadWrite);
-            using (IOutputStream outStream = raStream.GetOutputStreamAt(0))
-            {
-                DataContractSerializer serializer = new DataContractSerializer(typeof(List<Grade>));
-                serializer.WriteObject(outStream.AsStreamForWrite(), grades_list);
-                await outStream.FlushAsync();
-                outStream.Dispose();
-            }
-            raStream.Dispose();
-        }
-
-        public static async void SaveLessons()
-        {
-            List<Lesson> lessons_list = my_lessons_list;
-            StorageFile lessons_file = await ApplicationData.Current.LocalFolder.CreateFileAsync("lessons_list", CreationCollisionOption.OpenIfExists);
-
-            IRandomAccessStream raStream2 = await lessons_file.OpenAsync(FileAccessMode.ReadWrite);
-            using (IOutputStream outStream2 = raStream2.GetOutputStreamAt(0))
-            {
-                DataContractSerializer serializer2 = new DataContractSerializer(typeof(List<Lesson>));
-                serializer2.WriteObject(outStream2.AsStreamForWrite(), lessons_list);
-                await outStream2.FlushAsync();
-                outStream2.Dispose();
-            }
-            raStream2.Dispose();
-        }
-
-        public static async void SaveLessonTimes()
-        {
-            List<LessonTime> lessontimes_list = my_lessontimes_list;
-            StorageFile lessontimes_file = await ApplicationData.Current.LocalFolder.CreateFileAsync("lessontimes_list", CreationCollisionOption.OpenIfExists);
-
-            IRandomAccessStream raStream = await lessontimes_file.OpenAsync(FileAccessMode.ReadWrite);
-            using (IOutputStream outStream = raStream.GetOutputStreamAt(0))
-            {
-                DataContractSerializer serializer = new DataContractSerializer(typeof(List<LessonTime>));
-                serializer.WriteObject(outStream.AsStreamForWrite(), lessontimes_list);
-                await outStream.FlushAsync();
-                outStream.Dispose();
-            }
-            raStream.Dispose();
-        }
-
     }
 }

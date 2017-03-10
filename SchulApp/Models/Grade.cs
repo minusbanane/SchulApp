@@ -24,14 +24,13 @@ namespace SchulApp.Models
         public Subject subject { get{ return SubjectManager.GetSubject(this.subject_id); } }
         public string readable_date { get { return this.date.Day.ToString() + "." + this.date.Month.ToString() + "." + this.date.Year.ToString(); } }
 
-        public Grade(int given_subject_id, int given_grade, DateTimeOffset given_date, GradeType given_type)
+        public Grade(int subject_id, int grade, DateTimeOffset date, GradeType type)
         {
-            subject_id = given_subject_id;
-            grade = given_grade;
-            date = given_date;
-            type = given_type;
+            this.subject_id = subject_id;
+            this.grade = grade;
+            this.date = date;
+            this.type = type;
         }
-
         public void AddGrade()
         {
             this.id = GradeManager.FreeId();
@@ -112,43 +111,61 @@ namespace SchulApp.Models
             await not_completed_dialog.ShowAsync();
         }
     }
-
+    
     [DataContract]
     public class GradeType
     {
         [DataMember]
         public string typename { get; set; }
-        [DataMember]
-        public string readable_typename { get; set; }
-        [DataMember]
-        public int typeid { get; set; }
-        [DataMember]
-        public int rate { get; set; }
-
-        public GradeType(string given_typename)
+        public string readable_typename { get
+            {
+                if (typename == "normaltest")
+                {
+                    return "Test";
+                } else if (typename == "classwork")
+                {
+                    return "Klassenarbeit";
+                } else
+                {
+                    return "Fehler";
+                }
+            } }
+        public int typeid { get
+            {
+                if (typename == "normaltest")
+                {
+                    return 0;
+                } else if (typename == "classwork")
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            } }
+        public int rate
         {
-            if (given_typename == "normaltest")
+            get
             {
-                this.typename = "normaltest";
-                this.readable_typename = "Test";
-                this.typeid = 0;
-                this.rate = 50;
-            }
-
-            if (given_typename == "classwork")
-            {
-                this.typename = "classwork";
-                this.readable_typename = "Klassenarbeit";
-                this.typeid = 1;
-                this.rate = 50;
+                if (typename == "normaltest")
+                {
+                    return 50;
+                } else if (typename == "classwork")
+                {
+                    return 1;
+                } else
+                {
+                    return 0;
+                }
             }
         }
 
         public static List<GradeType> GetGradeTypes()
         {
             List<GradeType> gradetypes = new List<GradeType> { };
-            gradetypes.Add(new GradeType("normaltest"));
-            gradetypes.Add(new GradeType("classwork"));
+            gradetypes.Add(new GradeType { typename = "normaltest" });
+            gradetypes.Add(new GradeType { typename = "classwork" });
 
             return gradetypes;
         }

@@ -25,6 +25,8 @@ namespace SchulApp
     public sealed partial class AddSubject : Page
     {
         List<SubjectColor> list_of_colors;
+        bool edit = false;
+        Subject subject = new Subject();
         public AddSubject()
         {
             this.InitializeComponent();
@@ -32,11 +34,30 @@ namespace SchulApp
             list_of_colors = SubjectColorManager.GetList();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if(e.Parameter != null)
+            {
+                subject = SubjectManager.GetSubject((e.Parameter as Subject).id);
+                tbx_Name_AddSubject.Text = subject.subject_name;
+                tbx_Teacher_AddSubject.Text = subject.teacher;
+                gvw_ColorPicker_AddSubject.SelectedItem = SubjectColorManager.GetList().Find(x => x.name == subject.color.name);
+
+                edit = true;
+            }
+        }
+
         private void btn_DoneAddSubject_Click(object sender, RoutedEventArgs e)
         {
-            bool erfolgreich = SubjectManager.AddSubject(tbx_Name_AddSubject.Text, tbx_Teacher_AddSubject.Text, (SubjectColor)gvw_ColorPicker_AddSubject.SelectedItem);
-            
-            if(erfolgreich == true)
+            bool erfolgreich = true;
+            if(edit)
+            {
+                SubjectManager.EditSubject(subject.id, tbx_Name_AddSubject.Text, tbx_Teacher_AddSubject.Text, SubjectColorManager.GetList().Find(x => x.name == (gvw_ColorPicker_AddSubject.SelectedItem as SubjectColor).name));
+            } else
+            {
+                erfolgreich = SubjectManager.AddSubject(tbx_Name_AddSubject.Text, tbx_Teacher_AddSubject.Text, (SubjectColor)gvw_ColorPicker_AddSubject.SelectedItem);
+            }
+            if (erfolgreich == true)
             {
                 Frame.GoBack();
             }
