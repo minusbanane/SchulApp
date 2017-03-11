@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SchulApp.Models;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -24,25 +25,28 @@ namespace SchulApp
     public sealed partial class AddLesson : Page
     {
         private Lesson edit_lesson;
+        private int selected_day = -1;
 
         public AddLesson()
         {
             this.InitializeComponent();
             fill_data();
+            cmb_Day_AddLesson_SelectionChanged(new object(), new SelectionChangedEventArgs(new List<object> { }, new List<object> { }));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter is Lesson)
             {
-                Lesson stunde = (Lesson)e.Parameter;
                 edit_lesson = (Lesson)e.Parameter;
-                cmb_Day_AddLesson.SelectedIndex = (int)stunde.day - 1;
-                cmb_LessonTime_AddLesson.SelectedItem = LessonTimeManager.GetLessonTimes().Find(x => x.lesson_number == stunde.lesson_time.lesson_number);
-                cmb_Subject_AddLesson.SelectedItem = stunde.subject;
+                cmb_Day_AddLesson.SelectedIndex = (int)edit_lesson.day - 1;
+                cmb_LessonTime_AddLesson.SelectedItem = LessonTimeManager.GetLessonTimes().Find(x => x.lesson_number == edit_lesson.lesson_time.lesson_number);
+                cmb_Subject_AddLesson.SelectedItem = edit_lesson.subject;
+
             } else if(e.Parameter is int)
             {
-                cmb_Day_AddLesson.SelectedIndex = (int)e.Parameter;
+                selected_day = (int)e.Parameter;
+                cmb_Day_AddLesson.SelectedIndex = selected_day;
             }
         }
 
@@ -139,6 +143,23 @@ namespace SchulApp
             if(cont)
             {
                 Frame.GoBack();
+            }
+        }
+
+        private void cmb_Day_AddLesson_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(cmb_Day_AddLesson != null && cmb_Subject_AddLesson != null && cmb_LessonTime_AddLesson != null)
+            {
+                if (cmb_Day_AddLesson.SelectedIndex == -1 || cmb_LessonTime_AddLesson.SelectedIndex == -1 || cmb_Subject_AddLesson.SelectedIndex == -1)
+                {
+                    btn_Done_AddLesson.IsEnabled = false;
+                    tbk_NotCompleted_Addlesson.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_Done_AddLesson.IsEnabled = true;
+                    tbk_NotCompleted_Addlesson.Visibility = Visibility.Collapsed;
+                }
             }
         }
     }

@@ -45,6 +45,10 @@ namespace SchulApp.Models
         public static bool AddSubject(string given_subject_name, string given_teacher, SubjectColor given_color, int given_id = 0)
         {
             bool erfolgreich;
+            if(given_color == null)
+            {
+                given_color = SubjectColorManager.GetList().Find(x => x.color == Colors.Black);
+            }
 
             if(given_subject_name != "" && given_color != null)
             {
@@ -115,7 +119,7 @@ namespace SchulApp.Models
         {
             bool erfolgreich = true;
 
-            if(!String.IsNullOrWhiteSpace(new_subject_name) && !String.IsNullOrWhiteSpace(new_teacher))
+            if(!String.IsNullOrWhiteSpace(new_subject_name))
             {
                 MyData.my_subjects_list.Find(x => x.id == given_id).subject_name = new_subject_name;
                 MyData.my_subjects_list.Find(x => x.id == given_id).teacher = new_teacher;
@@ -124,25 +128,6 @@ namespace SchulApp.Models
             {
                 MyData.my_subjects_list.Find(x => x.id == given_id).color = new_color;
             }
-
-            /*if(new_subject_name != "")
-            {
-                Subject new_subject = new Subject() { };
-                if(new_color == null)
-                {
-                    new_color = MyData.my_subjects_list.Find(x => x.id == given_id).color;
-                }
-                SubjectManager.DeleteSubject(given_id);
-                SubjectManager.AddSubject(new_subject_name, new_teacher, new_color, given_id);
-                List<Grade> grades_to_edit = GradeManager.GetGradesBySubject(given_id);
-                foreach (Grade grade in grades_to_edit)
-                {
-                    GradeManager.DeleteGrade(grade.id);
-                    grade.subject_name = new_subject_name;
-                    GradeManager.AddGrade(grade);
-                }
-                erfolgreich = true;
-            } */
 
             return erfolgreich;
         }

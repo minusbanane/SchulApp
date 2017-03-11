@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="8184SebastianDittrich.Schul-App" Publisher="CN=544A0589-C09C-48FE-ACF6-7F6BDA0068B7" Version="1.1.0.0" />
+  <Identity Name="8184SebastianDittrich.Schul-App" Publisher="CN=544A0589-C09C-48FE-ACF6-7F6BDA0068B7" Version="1.1.2.0" />
   <mp:PhoneIdentity PhoneProductId="b4268879-4a51-4f94-b3ce-fe55203ecf33" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Schul-App</DisplayName>

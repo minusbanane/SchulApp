@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:SchulApp.Models"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <Page.BottomAppBar>
         <CommandBar Name="cmb_Subjects" Background="{ThemeResource AppBarBackground}">
@@ -18,28 +19,84 @@
         </CommandBar>
     </Page.BottomAppBar>
 
+    <Page.Resources>
+        <DataTemplate x:Key="dtm_SubjectsListview_Subjects" x:DataType="data:Subject">
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Ellipse Grid.Column="0" Fill="{x:Bind color.brush}" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Foreground="White" Text="{x:Bind first_letter}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="ExtraLight" FontSize="30"/>
+                <StackPanel Orientation="Vertical" Grid.Column="1"  Margin="10,0,0,0">
+                    <TextBlock Text="{x:Bind subject_name}" FontSize="30%"/>
+                    <TextBlock Text="{x:Bind teacher}" Foreground="DarkGray" FontSize="20%"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="dtm_SubjectsDetails_Subjects" x:DataType="data:Subject">
+            <Grid>
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <TextBlock Text="{x:Bind subject_name}" Style="{ThemeResource HeaderTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="&#xE13D;" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,5,0" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="Gray"/>
+                        <TextBlock Text="{x:Bind teacher}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Gray" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xEB05;" FontFamily="Segoe MDL2 Assets" Style="{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="Gray"/>
+                        <TextBlock Text="{x:Bind average}" VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Noten" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,20,0"/>
+                    </StackPanel>
+                    <ListView
+                        Name="lvw_Grades_SubjectDetail"
+                        ItemsSource="{x:Bind grades}"
+                        Padding="0,0,0,0"
+                        Margin="-10,0,0,0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:Grade">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{x:Bind grade}" Style="{ThemeResource BodyTextBlockStyle}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind readable_date}" Foreground="DarkGray" FontSize="15%" HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+                <ListView>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="Hallo" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ListView 
             Name="lvw_Subjects"
             ItemsSource="{x:Bind subjects_list}"
             IsItemClickEnabled="True"
-            SelectionChanged="lvw_Subjects_SelectionChanged">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:Subject">
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Ellipse Grid.Column="0" Fill="{x:Bind color.brush}" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="0" Foreground="White" Text="{x:Bind first_letter}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="ExtraLight" FontSize="30"/>
-                        <StackPanel Orientation="Vertical" Grid.Column="1"  Margin="10,0,0,0">
-                            <TextBlock Text="{x:Bind subject_name}" FontSize="30%"/>
-                            <TextBlock Text="{x:Bind teacher}" Foreground="DarkGray" FontSize="20%"/>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+            SelectionChanged="lvw_Subjects_SelectionChanged"
+            ItemTemplate="{StaticResource dtm_SubjectsListview_Subjects}">
         </ListView>
+        <!--
+        <controls:MasterDetailsView
+            Name="lvw_Subjects"
+            ItemsSource="{x:Bind subjects_list}"
+            ItemTemplate="{StaticResource dtm_SubjectsListview_Subjects}"
+            DetailsTemplate="{StaticResource dtm_SubjectsDetails_Subjects}">
+            
+        </controls:MasterDetailsView>-->
     </Grid>
 </Page>

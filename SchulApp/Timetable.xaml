@@ -31,7 +31,7 @@
                     </Grid.ColumnDefinitions>
                     <Ellipse Fill="{x:Bind subject.color.brush}" Width="60" Height="60" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="{x:Bind lesson_time.lesson_number}" FontSize="45" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="ExtraLight" LineHeight="45"/>
+                        <TextBlock Text="{x:Bind lesson_time.lesson_number}" FontSize="45" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="ExtraLight" LineHeight="45" Foreground="White"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0">
                         <TextBlock Text="{x:Bind subject.subject_name}" FontSize="25" VerticalAlignment="Center"/>

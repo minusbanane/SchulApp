@@ -32,6 +32,7 @@ namespace SchulApp
             this.InitializeComponent();
             var parent = this.Parent;
             list_of_colors = SubjectColorManager.GetList();
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

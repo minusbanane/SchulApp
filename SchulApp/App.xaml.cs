@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SchulApp.Models;
 using Windows.UI.Core;
+using Windows.Storage;
 
 namespace SchulApp
 {
@@ -33,6 +34,20 @@ namespace SchulApp
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             MyData.LoadMyData();
+            if(ApplicationData.Current.LocalSettings.Values["colortheme"] != null)
+            {
+                if((int)ApplicationData.Current.LocalSettings.Values["colortheme"] == 0)
+                {
+                    RequestedTheme = ApplicationTheme.Light;
+                }
+                else
+                {
+                    RequestedTheme = ApplicationTheme.Dark;
+                }
+            } else
+            {
+                RequestedTheme = ApplicationTheme.Dark;
+            }
         }
 
         /// <summary>

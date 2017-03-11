@@ -49,8 +49,28 @@ namespace SchulApp
             }
         }
 
+        private async void LessonNumberInValid()
+        {
+            ContentDialog invalid = new ContentDialog()
+            {
+                Title = "Stundennummer ungültig!",
+                Content = "Die Nummer der Stunde darf nur aus Zahlen bestehen. Prüfe das noch einmal!",
+                PrimaryButtonText = "Okay!"
+            };
+
+            await invalid.ShowAsync();
+        }
+
         private void btn_Done_AddLesson_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                int.Parse(tbx_LessonNumber_AddGrade_Timetable_Settings.Text);
+            } catch(Exception)
+            {
+                LessonNumberInValid();
+                return;
+            }
             TimeSpan starttime = tmp_Starttime_AddLesson_Timetable_Settings.Time;
             TimeSpan endtime = tmp_Endtime_AddLesson_Timetable_Settings.Time;
             if (edit && edit_lessontime != null)

@@ -85,7 +85,7 @@ namespace SchulApp
                 tbk_Header_MainPage.Text = "Home";
                 lbx_SplitView_MainPage.SelectedItem = Home;
             }
-            if (page == typeof(Subjects) || page == typeof(SubjectDetail) || page == typeof(AddSubject) || page == typeof(EditSubject))
+            if (page == typeof(Subjects) || page == typeof(SubjectDetail) || page == typeof(AddSubject))
             {
                 tbk_Header_MainPage.Text = "Fächer";
                 lbx_SplitView_MainPage.SelectedItem = Subjects;

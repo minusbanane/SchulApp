@@ -8,8 +8,7 @@
     xmlns:data="using:SchulApp.Models"
     mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
-            
+        <Grid>
         </Grid>
     </ScrollViewer>
 </Page>

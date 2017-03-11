@@ -111,9 +111,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditSubject.xaml.cs">
-      <DependentUpon>EditSubject.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Grades.xaml.cs">
       <DependentUpon>Grades.xaml</DependentUpon>
     </Compile>
@@ -180,10 +177,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddSubject.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EditSubject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
